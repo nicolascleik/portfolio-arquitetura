@@ -59,21 +59,23 @@ export default function PlanViewer({ pdfUrl, title }: PlanViewerProps) {
         </div>
       </div>
 
-      <div className={`flex justify-center overflow-auto bg-white border border-stone-200 p-4 shadow-lg ${isFullScreen ? 'flex-1' : 'min-h-[500px]'}`}>
-        <Document
-            file={pdfUrl}
-            onLoadSuccess={onDocumentLoadSuccess}
-            loading={<div className="p-10 text-stone-400 animate-pulse">Carregando planta arquitetônica...</div>}
-            error={<div className="p-10 text-red-400">Erro ao carregar PDF. Verifique o caminho do arquivo.</div>}
-        >
-            <Page 
-                pageNumber={pageNumber} 
-                scale={scale} 
-                renderTextLayer={false} 
-                renderAnnotationLayer={false}
-                className="shadow-md"
-            />
-        </Document>
+      <div className={`overflow-auto bg-white border border-stone-200 p-4 shadow-lg ${isFullScreen ? 'flex-1' : 'min-h-[500px]'}`}>
+        <div className="w-fit mx-auto">
+            <Document
+                file={pdfUrl}
+                onLoadSuccess={onDocumentLoadSuccess}
+                loading={<div className="p-10 text-stone-400 animate-pulse">Carregando planta arquitetônica...</div>}
+                error={<div className="p-10 text-red-400">Erro ao carregar PDF. Verifique o caminho do arquivo.</div>}
+            >
+                <Page 
+                    pageNumber={pageNumber} 
+                    scale={scale} 
+                    renderTextLayer={false} 
+                    renderAnnotationLayer={false}
+                    className="shadow-md"
+                />
+            </Document>
+        </div>
       </div>
     </div>
   );

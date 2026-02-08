@@ -76,24 +76,26 @@ export default function CVModal() {
                 </div>
 
                 {/* Área do PDF (Com Scroll) */}
-                <div className="flex-1 overflow-auto bg-stone-200 p-4 flex justify-center">
-                    <Document
-                        file={pdfUrl}
-                        onLoadSuccess={({ numPages }) => setNumPages(numPages)}
-                        loading={<div className="text-stone-500 mt-10">Carregando documento...</div>}
-                        error={<div className="text-red-500 mt-10">Erro ao carregar PDF. Verifique o arquivo.</div>}
-                    >
-                        {Array.from(new Array(numPages), (el, index) => (
-                            <Page 
-                                key={`page_${index + 1}`} 
-                                pageNumber={index + 1} 
-                                scale={scale}
-                                className="mb-4 shadow-lg"
-                                renderTextLayer={false}
-                                renderAnnotationLayer={false}
-                            />
-                        ))}
-                    </Document>
+                <div className="flex-1 overflow-auto bg-stone-200 p-4 flex">
+                    <div className="w-fit mx-auto">
+                        <Document
+                            file={pdfUrl}
+                            onLoadSuccess={({ numPages }) => setNumPages(numPages)}
+                            loading={<div className="text-stone-500 mt-10">Carregando documento...</div>}
+                            error={<div className="text-red-500 mt-10">Erro ao carregar PDF. Verifique o arquivo.</div>}
+                        >
+                            {Array.from(new Array(numPages), (el, index) => (
+                                <Page 
+                                    key={`page_${index + 1}`} 
+                                    pageNumber={index + 1} 
+                                    scale={scale}
+                                    className="mb-4 shadow-lg"
+                                    renderTextLayer={false}
+                                    renderAnnotationLayer={false}
+                                />
+                            ))}
+                        </Document>
+                    </div>
                 </div>
 
                 {/* Barra de Controle Inferior (Zoom) */}
