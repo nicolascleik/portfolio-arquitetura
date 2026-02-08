@@ -2,27 +2,40 @@
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/ui/Header.astro';
 import Footer from '../components/ui/Footer.astro';
+import ProjectGallery from '../components/architect/ProjectGallery'; 
+import { getCollection } from 'astro:content';
+
+const allProjects = await getCollection('projects');
+const sortedProjects = allProjects.sort((a, b) => b.data.year - a.data.year);
 ---
 
 <Layout title="ARQ.STUDIO | Portfólio de Arquitetura">
   <Header />
   
-  <main class="pt-20"> <section class="h-[80vh] flex items-center justify-center bg-stone-100">
-      <div class="text-center px-4">
-        <h1 class="text-5xl md:text-7xl font-light mb-6 text-stone-900">
-          Espaço, Luz <br /> & Matéria
-        </h1>
-        <p class="text-lg text-stone-500 max-w-xl mx-auto">
-          Transformando visões urbanas e residenciais em realidade tangível através de design sustentável.
-        </p>
-      </div>
+  <main class="pt-20">
+    
+    <section class="h-[80vh] flex items-center justify-center bg-stone-100 relative overflow-hidden">
+        {/* Background sutil */}
+        <div class="absolute inset-0 bg-[url('/assets/mockup.jpg')] bg-cover bg-center opacity-30 mix-blend-multiply"></div>
+        
+        <div class="text-center px-4 relative z-10">
+            <h1 class="text-5xl md:text-7xl font-light mb-6 text-stone-900">
+              Espaço, Luz <br /> & Matéria
+            </h1>
+            <p class="text-lg text-stone-500 max-w-xl mx-auto">
+              Transformando visões urbanas e residenciais em realidade tangível através de design sustentável.
+            </p>
+        </div>
     </section>
 
-    <section id="projects" class="py-20 px-6 max-w-7xl mx-auto">
-      <h2 class="text-2xl font-semibold mb-12 border-l-4 border-stone-900 pl-4">Projetos Selecionados</h2>
-      <div class="p-10 border border-dashed border-stone-300 text-center text-stone-400">
-        Aqui entrará o componente React de Galeria
+    <section id="projects" class="py-24 px-6 max-w-7xl mx-auto">
+      <div class="mb-16">
+        <h2 class="text-3xl font-light text-stone-900 mb-4">Projetos Selecionados</h2>
+        <div class="w-24 h-1 bg-stone-900"></div>
       </div>
+
+      <ProjectGallery client:load projects={sortedProjects} />
+      
     </section>
 
   </main>

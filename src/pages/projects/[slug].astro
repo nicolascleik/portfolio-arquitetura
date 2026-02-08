@@ -3,9 +3,8 @@ import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/ui/Header.astro';
 import Footer from '../../components/ui/Footer.astro';
+import PlanViewer from '../../components/architect/PlanViewer';
 
-// A FUNÇÃO QUE FALTAVA
-// Ela busca todos os projetos e diz ao Astro: "Gere uma página para cada um desses slugs"
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
   
@@ -15,9 +14,7 @@ export async function getStaticPaths() {
   }));
 }
 
-// Pega os dados do projeto específico da página atual
 const { project } = Astro.props;
-// Renderiza o conteúdo Markdown (texto longo)
 const { Content } = await project.render();
 ---
 
@@ -63,7 +60,20 @@ const { Content } = await project.render();
     <article class="prose prose-stone prose-lg max-w-3xl mx-auto">
       <Content />
     </article>
-
+    
+    {/* SEÇÃO DE PLANTAS TÉCNICAS (Só renderiza se tiver blueprint no MD) */}
+    {project.data.blueprint && (
+      <section class="mt-24 border-t border-stone-200 pt-16">
+        <h2 class="text-3xl font-light text-stone-900 mb-8 text-center">Documentação Técnica</h2>
+        
+        {/* client:only="react" é necessário porque react-pdf usa APIs exclusivas do browser (window) */}
+        <PlanViewer 
+            client:only="react" 
+            pdfUrl={project.data.blueprint} 
+            title={project.data.title} 
+        />
+      </section>
+    )}
   </main>
 
   <Footer />

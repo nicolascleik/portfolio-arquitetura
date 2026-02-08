@@ -5,6 +5,7 @@ location: "Aracaju, SE"
 year: 2024
 area: "450m²"
 coverImage: "../../assets/mockup.jpg"
+blueprint: "/portfolio-arquitetura/assets/planta.pdf"
 gallery: 
   - "../../assets/mockup.jpg"
 featured: true
