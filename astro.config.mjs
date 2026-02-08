@@ -3,7 +3,7 @@ import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
-  site: 'https://seusite.github.io', 
+  site: 'https://cleik.dev', 
   base: '/portfolio-arquitetura', 
   
   integrations: [
