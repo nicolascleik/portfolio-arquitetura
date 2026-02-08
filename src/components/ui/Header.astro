@@ -1,15 +1,18 @@
 ---
 const navItems = [
-  { label: 'Projetos', href: '#projects' },
   { label: 'Sobre', href: '#about' },
+  { label: 'Projetos', href: '#projects' },
+  { label: 'Serviços', href: '#services' }, 
   { label: 'Contato', href: '#contact' },
 ];
+
+const base = import.meta.env.BASE_URL;
 ---
 
-<header class="fixed top-0 w-full z-50 bg-stone-50/80 backdrop-blur-md border-b border-stone-200">
+<header class="fixed top-0 w-full z-50 bg-stone-50/80 backdrop-blur-md border-b border-stone-200 transition-all duration-300" id="main-header">
   <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
     
-    <a href="/" class="text-xl font-semibold tracking-widest uppercase">
+    <a href={base} class="text-xl font-semibold tracking-widest uppercase hover:text-stone-600 transition-colors">
       ARQ<span class="text-stone-400">.</span>STUDIO
     </a>
 
@@ -17,16 +20,41 @@ const navItems = [
       {navItems.map(item => (
         <a 
           href={item.href} 
-          class="text-sm font-medium text-stone-600 hover:text-black transition-colors"
+          class="text-sm font-medium text-stone-600 hover:text-stone-900 hover:underline underline-offset-4 transition-all"
         >
           {item.label}
         </a>
       ))}
     </nav>
 
-    <button class="md:hidden p-2 text-stone-600">
-      <span class="sr-only">Menu</span>
+    <button 
+      class="md:hidden p-2 text-stone-600 hover:bg-stone-100 rounded-md transition-colors" 
+      aria-label="Abrir Menu"
+      id="menu-btn"
+    >
       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
     </button>
   </div>
+
+  <div id="mobile-menu" class="hidden md:hidden absolute top-20 left-0 w-full bg-stone-50 border-b border-stone-200 p-6 shadow-xl">
+    <nav class="flex flex-col gap-4">
+      {navItems.map(item => (
+        <a 
+          href={item.href} 
+          class="text-lg font-medium text-stone-600 py-2 border-b border-stone-100 last:border-0"
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+  </div>
 </header>
+
+<script>
+  const btn = document.getElementById('menu-btn');
+  const menu = document.getElementById('mobile-menu');
+
+  btn?.addEventListener('click', () => {
+    menu?.classList.toggle('hidden');
+  });
+</script>
