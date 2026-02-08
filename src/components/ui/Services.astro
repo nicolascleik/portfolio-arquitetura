@@ -1,0 +1,45 @@
+---
+import { PencilRuler, HardHat, Armchair, Building2 } from 'lucide-react';
+
+const services = [
+  {
+    icon: Building2,
+    title: "Projeto Arquitetônico",
+    desc: "Concepção completa de residências e edifícios, do estudo preliminar ao executivo."
+  },
+  {
+    icon: Armchair,
+    title: "Design de Interiores",
+    desc: "Curadoria de mobiliário, acabamentos e iluminação para transformar ambientes."
+  },
+  {
+    icon: HardHat,
+    title: "Gestão de Obra",
+    desc: "Acompanhamento técnico para garantir que a construção siga fielmente o projeto."
+  },
+  {
+    icon: PencilRuler,
+    title: "Consultoria Urbanística",
+    desc: "Estudos de viabilidade e planejamento urbano para grandes áreas."
+  }
+];
+---
+
+<section id="services" class="py-20 bg-stone-900 text-stone-50">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="mb-16 text-center md:text-left">
+      <h2 class="text-3xl font-light mb-4">Áreas de Atuação</h2>
+      <div class="w-24 h-1 bg-stone-50 mx-auto md:mx-0"></div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      {services.map((service) => (
+        <div class="group p-6 border border-stone-800 hover:bg-stone-800 transition-colors duration-300">
+          <service.icon className="w-10 h-10 mb-6 text-stone-400 group-hover:text-white transition-colors" />
+          <h3 class="text-xl font-medium mb-3">{service.title}</h3>
+          <p class="text-stone-400 text-sm leading-relaxed">{service.desc}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
