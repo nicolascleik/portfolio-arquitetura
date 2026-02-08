@@ -2,14 +2,21 @@
 const navItems = [
   { label: 'Sobre', href: '#about' },
   { label: 'Projetos', href: '#projects' },
-  { label: 'Serviços', href: '#services' }, 
+  { label: 'Serviços', href: '#services' },
   { label: 'Contato', href: '#contact' },
 ];
 
 const base = import.meta.env.BASE_URL;
+
+const getLink = (href: string) => {
+  if (href.startsWith('#')) {
+    return `${base === '/' ? '' : base}/${href}`;
+  }
+  return href;
+};
 ---
 
-<header class="fixed top-0 w-full z-50 bg-stone-50/80 backdrop-blur-md border-b border-stone-200 transition-all duration-300" id="main-header">
+<header class="fixed top-0 w-full z-50 bg-stone-50/90 backdrop-blur-md border-b border-stone-200 transition-all duration-300" id="main-header">
   <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
     
     <a href={base} class="text-xl font-semibold tracking-widest uppercase hover:text-stone-600 transition-colors">
@@ -19,7 +26,7 @@ const base = import.meta.env.BASE_URL;
     <nav class="hidden md:flex gap-8">
       {navItems.map(item => (
         <a 
-          href={item.href} 
+          href={getLink(item.href)} 
           class="text-sm font-medium text-stone-600 hover:text-stone-900 hover:underline underline-offset-4 transition-all"
         >
           {item.label}
@@ -28,7 +35,7 @@ const base = import.meta.env.BASE_URL;
     </nav>
 
     <button 
-      class="md:hidden p-2 text-stone-600 hover:bg-stone-100 rounded-md transition-colors" 
+      class="md:hidden p-2 text-stone-600 hover:bg-stone-100 rounded-md transition-colors z-50 relative" 
       aria-label="Abrir Menu"
       id="menu-btn"
     >
@@ -36,12 +43,12 @@ const base = import.meta.env.BASE_URL;
     </button>
   </div>
 
-  <div id="mobile-menu" class="hidden md:hidden absolute top-20 left-0 w-full bg-stone-50 border-b border-stone-200 p-6 shadow-xl">
+  <div id="mobile-menu" class="hidden md:hidden absolute top-20 left-0 w-full bg-stone-50 border-b border-stone-200 p-6 shadow-xl z-40 origin-top animate-in slide-in-from-top-2 duration-200">
     <nav class="flex flex-col gap-4">
       {navItems.map(item => (
         <a 
-          href={item.href} 
-          class="text-lg font-medium text-stone-600 py-2 border-b border-stone-100 last:border-0"
+          href={getLink(item.href)} 
+          class="mobile-link text-lg font-medium text-stone-600 py-2 border-b border-stone-100 last:border-0 hover:text-stone-900"
         >
           {item.label}
         </a>
@@ -51,10 +58,27 @@ const base = import.meta.env.BASE_URL;
 </header>
 
 <script>
-  const btn = document.getElementById('menu-btn');
-  const menu = document.getElementById('mobile-menu');
+  const menuBtn = document.getElementById('menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const mobileLinks = document.querySelectorAll('.mobile-link');
 
-  btn?.addEventListener('click', () => {
-    menu?.classList.toggle('hidden');
+  menuBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    mobileMenu?.classList.toggle('hidden');
+  });
+
+  document.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement;
+    if (!mobileMenu?.classList.contains('hidden') && 
+        !mobileMenu?.contains(target) && 
+        !menuBtn?.contains(target)) {
+      mobileMenu?.classList.add('hidden');
+    }
+  });
+
+  mobileLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      mobileMenu?.classList.add('hidden');
+    });
   });
 </script>
