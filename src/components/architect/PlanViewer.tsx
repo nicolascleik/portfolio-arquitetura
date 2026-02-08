@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
-import { ChevronLeft, ChevronRight, ZoomIn, ZoomOut, Maximize2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ZoomIn, ZoomOut, Maximize2, Minimize2 } from 'lucide-react';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
 
@@ -18,17 +18,29 @@ export default function PlanViewer({ pdfUrl, title }: PlanViewerProps) {
   const [numPages, setNumPages] = useState<number>(0);
   const [pageNumber, setPageNumber] = useState<number>(1);
   const [scale, setScale] = useState<number>(1.0);
+  const [isFullScreen, setIsFullScreen] = useState(false);
 
   function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
     setNumPages(numPages);
   }
 
   return (
-    <div className="bg-stone-100 p-8 rounded-lg border border-stone-200 shadow-inner">
+    <div className={`transition-all duration-300 ${
+        isFullScreen 
+            ? 'fixed inset-0 z-50 bg-stone-100 w-full h-full p-4 overflow-auto flex flex-col' 
+            : 'bg-stone-100 p-8 rounded-lg border border-stone-200 shadow-inner relative'
+    }`}>
+      
       <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
         <div>
             <h3 className="text-xl font-medium text-stone-900 flex items-center gap-2">
-                <Maximize2 size={20} />
+                <button 
+                    onClick={() => setIsFullScreen(!isFullScreen)} 
+                    className="hover:text-stone-600 transition-colors cursor-pointer"
+                    title={isFullScreen ? "Minimizar" : "Tela Cheia"}
+                >
+                    {isFullScreen ? <Minimize2 size={20} /> : <Maximize2 size={20} />}
+                </button>
                 Pranchas Técnicas
             </h3>
             <p className="text-sm text-stone-500">{title} — Página {pageNumber} de {numPages}</p>
@@ -47,7 +59,7 @@ export default function PlanViewer({ pdfUrl, title }: PlanViewerProps) {
         </div>
       </div>
 
-      <div className="flex justify-center overflow-auto bg-white border border-stone-200 p-4 min-h-[500px] shadow-lg">
+      <div className={`flex justify-center overflow-auto bg-white border border-stone-200 p-4 shadow-lg ${isFullScreen ? 'flex-1' : 'min-h-[500px]'}`}>
         <Document
             file={pdfUrl}
             onLoadSuccess={onDocumentLoadSuccess}
