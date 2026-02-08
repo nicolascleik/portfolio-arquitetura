@@ -8,6 +8,8 @@ coverImage: "../../assets/mockup.jpg"
 blueprint: "/portfolio-arquitetura/assets/planta.pdf"
 gallery: 
   - "../../assets/mockup.jpg"
+  - "../../assets/mockup.jpg" 
+  - "../../assets/mockup.jpg"
 featured: true
 ---
 

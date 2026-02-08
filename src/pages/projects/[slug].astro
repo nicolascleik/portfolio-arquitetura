@@ -4,6 +4,7 @@ import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/ui/Header.astro';
 import Footer from '../../components/ui/Footer.astro';
 import PlanViewer from '../../components/architect/PlanViewer';
+import ImageGallery from '../../components/architect/ImageGallery';
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
@@ -47,10 +48,7 @@ const { Content } = await project.render();
       </div>
     </header>
 
-    {/* Imagem de Capa (Hero) 
-        Mobile: h-auto + object-contain (Mostra a foto inteira sem cortar)
-        Desktop: h-[70vh] + object-cover (Cria o efeito de banner imersivo)
-    */}
+    {/* Imagem de Capa (Hero) */}
     <div class="w-full h-auto md:h-[70vh] bg-stone-100 mb-10 md:mb-16 overflow-hidden flex items-center justify-center">
         <img 
             src={project.data.coverImage.src} 
@@ -60,16 +58,23 @@ const { Content } = await project.render();
     </div>
 
     {/* Conteúdo Markdown (Texto Descritivo) */}
-    <article class="prose prose-stone prose-lg max-w-3xl mx-auto">
+    <article class="prose prose-stone prose-lg max-w-3xl mx-auto mb-16">
       <Content />
     </article>
     
+    {/* --- AQUI ENTRA A GALERIA --- */}
+    {/* Só aparece se houver imagens na lista 'gallery' do Markdown */}
+    {project.data.gallery && (
+      <section class="border-t border-stone-200 pt-12">
+         <ImageGallery client:visible images={project.data.gallery} />
+      </section>
+    )}
+    {/* --------------------------- */}
+
     {/* SEÇÃO DE PLANTAS TÉCNICAS (Só renderiza se tiver blueprint no MD) */}
     {project.data.blueprint && (
-      <section class="mt-24 border-t border-stone-200 pt-16">
-        <h2 class="text-3xl font-light text-stone-900 mb-8 text-center">Documentação Técnica</h2>
-        
-        {/* client:only="react" é necessário porque react-pdf usa APIs exclusivas do browser (window) */}
+      <section class="mt-12 border-t border-stone-200 pt-16">
+        {/* client:only="react" é necessário para o PDF */}
         <PlanViewer 
             client:only="react" 
             pdfUrl={project.data.blueprint} 
