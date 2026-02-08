@@ -1,0 +1,70 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/ui/Header.astro';
+import Footer from '../../components/ui/Footer.astro';
+
+// A FUNÇÃO QUE FALTAVA
+// Ela busca todos os projetos e diz ao Astro: "Gere uma página para cada um desses slugs"
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  
+  return projects.map(project => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+// Pega os dados do projeto específico da página atual
+const { project } = Astro.props;
+// Renderiza o conteúdo Markdown (texto longo)
+const { Content } = await project.render();
+---
+
+<Layout title={`${project.data.title} | ARQ.STUDIO`}>
+  <Header />
+  
+  <main class="pt-24 pb-20 px-6 max-w-5xl mx-auto">
+    {/* Botão de Voltar */}
+    <a href="/portfolio-arquitetura" class="inline-flex items-center text-sm text-stone-500 hover:text-stone-900 mb-8 transition-colors">
+      &larr; Voltar para Projetos
+    </a>
+
+    {/* Cabeçalho do Projeto */}
+    <header class="mb-12 border-b border-stone-200 pb-12">
+      <span class="text-sm font-medium tracking-widest text-stone-500 uppercase mb-2 block">
+        {project.data.category} — {project.data.year}
+      </span>
+      <h1 class="text-4xl md:text-6xl font-light text-stone-900 mb-6">
+        {project.data.title}
+      </h1>
+      <div class="flex gap-8 text-stone-600 text-sm">
+        <div>
+          <span class="block text-stone-400 text-xs uppercase tracking-wider mb-1">Localização</span>
+          {project.data.location}
+        </div>
+        <div>
+          <span class="block text-stone-400 text-xs uppercase tracking-wider mb-1">Área</span>
+          {project.data.area}
+        </div>
+      </div>
+    </header>
+
+    {/* Imagem de Capa (Hero) */}
+    <div class="w-full h-[50vh] md:h-[70vh] bg-stone-100 mb-16 overflow-hidden">
+        <img 
+            src={project.data.coverImage.src} 
+            alt={project.data.title}
+            class="w-full h-full object-cover"
+        />
+    </div>
+
+    {/* Conteúdo Markdown (Texto Descritivo) */}
+    <article class="prose prose-stone prose-lg max-w-3xl mx-auto">
+      <Content />
+    </article>
+
+  </main>
+
+  <Footer />
+</Layout>
