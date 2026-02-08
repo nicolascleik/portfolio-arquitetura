@@ -1,1 +1,31 @@
 @import "tailwindcss";
+
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+    scroll-behavior: smooth;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent; 
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #a8a29e; 
+    border-radius: 0px; 
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #57534e;
+  }
+}
+
+body {
+  overflow-x: hidden; /* Evita rolagem lateral indesejada */
+  @apply bg-stone-50 text-stone-900;
+}
